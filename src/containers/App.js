@@ -1,8 +1,6 @@
 import React from "react";
 import Styles from "./App.module.css";
-// import Radium, { StyleRoot } from "radium";
-import Person from "./Person/Person";
-import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
+import Persons from "./../components/Persons/Persons";
 
 class App extends React.Component {
   state = {
@@ -65,67 +63,19 @@ class App extends React.Component {
   };
 
   render() {
-    const style = {
-      padding: "5px 10px",
-      border: "1px solid blue",
-      backgroundColor: "green",
-      fontSize: "18px",
-      cursor: "pointer",
-      color: "white",
-      margin: "5px"
-      // ":hover": {
-      //   backgroundColor: "lightgreen",
-      //   color: "black"
-      // }
-    };
     let persons = null;
     let btnClass = "";
 
     if (this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map((person, index) => {
-            return (
-              <ErrorBoundary key={person.key}>
-                <Person
-                  name={person.name}
-                  age={person.age}
-                  key={person.key}
-                  click={this.deletePersonHandler.bind(this, index)}
-                  changed={event => this.nameChangedHandler(event, person.key)}
-                />
-              </ErrorBoundary>
-            );
-          })}
-          {/* <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age}
-          /> */}
-          {/* another way of binding data to the funtion FAST!! */}
-          {/* <Person
-            name={this.state.persons[1].name}
-            age={this.state.persons[1].age}
-            click={this.switchNameHandler.bind(this, "Sadhana")}
-          /> */}
-          {/* <Person
-            name={this.state.persons[2].name}
-            age={this.state.persons[2].age}
-          >
-            My Hobbie is playing football
-          </Person> */}
-          {/* <Person
-            name={this.state.persons[3].name}
-            age={this.state.persons[3].age}
+          <Persons
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
             changed={this.nameChangedHandler}
-          /> */}
+          />
         </div>
       );
-
-      style.backgroundColor = "blue";
-      // style[":hover"] = {
-      //   backgroundColor: "red",
-      //   color: "black"
-      // };
 
       btnClass = Styles.Red;
     }
@@ -141,25 +91,16 @@ class App extends React.Component {
     }
 
     return (
-      // <StyleRoot>
       <div className={Styles.App}>
         <h1>Hi I'm React App</h1>
         <p className={classes.join(" ")}>This is really working!</p>
-        {/* one way to bind the value to the handler function
-            Note: SLOW!
-        */}
-        {/* <button style={style} onClick={() => this.switchNameHandler("Bandhan")}>
-          Switch Name
-        </button> */}
         <button className={btnClass} onClick={this.togglePersonsHandler}>
           Toggle Persons
         </button>
         {persons}
       </div>
-      // </StyleRoot>
     );
   }
 }
 
-// export default Radium(App);
 export default App;
