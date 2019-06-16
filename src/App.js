@@ -1,7 +1,8 @@
 import React from "react";
-import "./App.css";
+import Styles from "./App.module.css";
 // import Radium, { StyleRoot } from "radium";
 import Person from "./Person/Person";
+import ErrorBoundary from "./ErrorBoundary/ErrorBoundary";
 
 class App extends React.Component {
   state = {
@@ -78,19 +79,22 @@ class App extends React.Component {
       // }
     };
     let persons = null;
+    let btnClass = "";
 
     if (this.state.showPersons) {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
             return (
-              <Person
-                name={person.name}
-                age={person.age}
-                key={person.key}
-                click={this.deletePersonHandler.bind(this, index)}
-                changed={event => this.nameChangedHandler(event, person.key)}
-              />
+              <ErrorBoundary key={person.key}>
+                <Person
+                  name={person.name}
+                  age={person.age}
+                  key={person.key}
+                  click={this.deletePersonHandler.bind(this, index)}
+                  changed={event => this.nameChangedHandler(event, person.key)}
+                />
+              </ErrorBoundary>
             );
           })}
           {/* <Person
@@ -122,21 +126,23 @@ class App extends React.Component {
       //   backgroundColor: "red",
       //   color: "black"
       // };
+
+      btnClass = Styles.Red;
     }
 
     // let classes = ["red", "bold"].join(" "); // "red bold"
     let classes = [];
 
     if (this.state.persons.length <= 2) {
-      classes.push("red"); // classes = ["red"]
+      classes.push(Styles.red); // classes = ["red"]
     }
     if (this.state.persons <= 1) {
-      classes.push("bold"); //classes =  ["red", "bold"]
+      classes.push(Styles.bold); //classes =  ["red", "bold"]
     }
 
     return (
       // <StyleRoot>
-      <div className="App">
+      <div className={Styles.App}>
         <h1>Hi I'm React App</h1>
         <p className={classes.join(" ")}>This is really working!</p>
         {/* one way to bind the value to the handler function
@@ -145,7 +151,7 @@ class App extends React.Component {
         {/* <button style={style} onClick={() => this.switchNameHandler("Bandhan")}>
           Switch Name
         </button> */}
-        <button style={style} onClick={this.togglePersonsHandler}>
+        <button className={btnClass} onClick={this.togglePersonsHandler}>
           Toggle Persons
         </button>
         {persons}
