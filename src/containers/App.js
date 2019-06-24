@@ -4,25 +4,38 @@ import Persons from "./../components/Persons/Persons";
 import Cockpit from "./../components/Persons/Cockpit/Cockpit";
 
 class App extends React.Component {
-  state = {
-    persons: [
-      { key: "person1", name: "Max", age: "28" },
-      { key: "person2", name: "Manu", age: "29" },
-      { key: "person3", name: "Stephanie", age: "36" },
-      { key: "person4", name: "Macmohan", age: "45" }
-    ],
-    showPersons: false
-  };
+  constructor(props) {
+    super(props);
+    console.log("[App.js] Inside constructor", props);
+    // Can define state here
+    this.state = {
+      persons: [
+        { key: "person1", name: "Max", age: "28" },
+        { key: "person2", name: "Manu", age: "29" },
+        { key: "person3", name: "Stephanie", age: "36" },
+        { key: "person4", name: "Macmohan", age: "45" }
+      ],
+      showPersons: false
+    };
+  }
+
+  componentWillMount() {
+    console.log("[App.js] Inside component will mount");
+  }
+
+  componentDidMount() {
+    console.log("[App.js] Inside component did mount");
+  }
 
   switchNameHandler = newName => {
     // console.log('Was Clicked');
     // !DO NOT USE THIS this.persons[0].name = Bandhan
     this.setState({
       persons: [
-        { name: newName, age: "29" },
-        { name: "Sam", age: "32" },
-        { name: "Raj", age: "29" },
-        { name: "Bandhan", age: "49" }
+        { name: newName, age: 29 },
+        { name: "Sam", age: 32 },
+        { name: "Raj", age: 29 },
+        { name: "Bandhan", age: 49 }
       ]
     });
   };
@@ -51,8 +64,12 @@ class App extends React.Component {
   };
 
   togglePersonsHandler = () => {
-    this.setState({
-      showPersons: this.state.showPersons ? false : true
+    // Wrong way of setting state
+    // this.setState({
+    //   showPersons: this.state.showPersons ? false : true
+    // });
+    this.setState((prevState, props) => {
+      return { showPersons: prevState.showPersons ? false : true };
     });
   };
 
@@ -64,6 +81,8 @@ class App extends React.Component {
   };
 
   render() {
+    console.log("[App.js] Inside render method");
+
     let persons = null;
 
     if (this.state.showPersons) {
@@ -80,6 +99,13 @@ class App extends React.Component {
 
     return (
       <div className={Styles.App}>
+        <button
+          onClick={() => {
+            this.setState({ showPersons: true });
+          }}
+        >
+          Show Persons
+        </button>
         <Cockpit
           persons={this.state.persons}
           showPersons={this.state.showPersons}
